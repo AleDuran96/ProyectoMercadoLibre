@@ -14,5 +14,5 @@ def preprocess_data(df: pd.DataFrame):
 
     return X_resampled, y_resampled
 
-def split_data(X, y, test_size=0.2, random_state=42):
+def split_data(X, y, test_size=0.3, random_state=100):
     return train_test_split(X, y, test_size=test_size, random_state=random_state, stratify=y)
