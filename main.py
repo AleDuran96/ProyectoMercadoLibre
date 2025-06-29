@@ -7,12 +7,14 @@ def main():
    df = load_data(DATA_PATH_BANK)
    
    ''' 
-   El dataframe se analizó en src/Notebooks/exploración
+   El dataframe se analizó en src/Notebooks/exploracion.ipynb
       -> El nombre de las columnas esta bien escrito
       -> Los valores de todas las columnas tienen el tipo de dato adecuado, 
          sin embargo se deben codificar para efectos del modelo.
-      -> No hay nulos para ningún campo
-      -> Se gráfican los campos para ver su distribución
+      -> No hay nulos para ningún campo.
+      -> Hay balances negativos, pero estos no afectan dado que es válido tener 
+         balances negativos en cuentas bancarias.
+      -> Se gráfican los campos para ver su distribución.
       -> El dataset no esta equilibrado, dado que para la variable Y el valor
          de "yes" tiene 521 registros, y el valor "no" tiene 4000.
    '''
