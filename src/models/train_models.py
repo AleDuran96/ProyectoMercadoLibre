@@ -3,7 +3,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 
-def entrenar_modelos(X_train, y_train, cv=5):
+def entrenar_modelos(X_train, y_train, cv=10):
     modelos = {
         "LogisticRegression": LogisticRegression(max_iter=1000),
         "RandomForest": RandomForestClassifier(n_estimators=100, random_state=42),
