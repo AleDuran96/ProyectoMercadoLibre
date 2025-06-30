@@ -83,12 +83,12 @@ def main():
    # 5. Gráfica de Curva ROC y análisis de métricas
    '''
    Resultados
-      -> El recall elevado (0.78) indica que el modelo logra identificar
+      -> El recall elevado (0.74) indica que el modelo logra identificar
       correctamente la mayoría de los clientes que sí aceptarían el producto,
       lo cual es clave para campañas comerciales.
-      -> El precision aceptable (0.31) implica que no se está desperdiciando
+      -> El precision aceptable (0.42) implica que no se está desperdiciando
       demasiado esfuerzo en clientes que finalmente no aceptarán.
-      -> El F1-score (0.548) refleja un equilibrio razonable entre ambos
+      -> El F1-score (0.53) refleja un equilibrio razonable entre ambos
       -> El AUC de 0.89 indica muy buena capacidad de discriminación del modelo
    '''
    plot_roc_curve(modelo_xgboost, X_test, y_test)
