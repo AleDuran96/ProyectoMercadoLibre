@@ -1,4 +1,11 @@
-Citation Request:
+Objetivo del Proyecto
+
+Se desarrolló un modelo de Machine Learning para predecir la aceptación del producto financiero ofrecido por un banco. 
+La variable objetivo “y” indica si un cliente aceptó (yes) o no (no) un depósito a plazo fijo tras una campaña de marketing. 
+El conjunto de datos fue proporcionado en un archivo .zip, e incluye descripciones detalladas de las variables
+
+Detalles del Dataset a analizar.
+
   This dataset is public available for research. The details are described in [Moro et al., 2011]. 
   Please include this citation if you plan to use this database:
 

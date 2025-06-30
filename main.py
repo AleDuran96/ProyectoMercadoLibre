@@ -34,6 +34,7 @@ def main():
    -> dummies
    '''
    df_encoded = codificar_variables(df)
+   # NO SE ELIMINA df_encoded.drop("duration", axis=1, inplace=True)
 
    # 1. Split con 30% para testeo
    X = df_encoded.drop("y", axis=1)
@@ -73,7 +74,7 @@ def main():
    Considerando que el dataframe general esta desbalanceado, el Accuracy y AUC
    pueden no ser las mejores métricas para evaluar el modelo, además debemos
    considerar el Recall, Precision y F1.
-   
+
    Además encontramos que el umbral que mejor nos ayuda para mejorar el Recall
    sin dejar de lado Precision es de 0.3
    '''
@@ -96,6 +97,8 @@ def main():
    # 6. Evaluamos el modelo en la muestra completa (40K registros)
    df_complete = load_data(DATA_PATH_COMPLETE)
    df_complete_encoded = codificar_variables(df_complete)
+   # NO SE ELIMINA df_complete_encoded.drop("duration", axis=1, inplace=True)
+
    # Separar X / y
    X = df_complete_encoded.drop("y", axis=1)
    y = df_complete_encoded["y"]
@@ -104,7 +107,7 @@ def main():
    print("Métricas Muestra Completa: " + str(metricas_df_complete))
 
 if __name__ == "__main__":
-    main()
+   main()
 
 
 
