@@ -38,24 +38,24 @@ def entrenar_final(modelo, X_train, y_train):
 def entrenar_xgboost_final(X_train, y_train):
     modelo = XGBClassifier(use_label_encoder=False, eval_metric="logloss", random_state=100)
 
-    #param_grid = {
-    #    "n_estimators": [100, 300],
-    #    "max_depth": [3, 6],
-    #    "learning_rate": [0.01, 0.1]
-    #}
-
     param_grid = {
-        "n_estimators": [100, 300, 500],
-        "max_depth": [3, 5, 7, 10],
-        "learning_rate": [0.01, 0.05, 0.1, 0.2],
-        "subsample": [0.8, 1.0],
-        "colsample_bytree": [0.6, 0.8, 1.0]
+        "n_estimators": [100, 300],
+        "max_depth": [3, 6],
+        "learning_rate": [0.01, 0.1]
     }
+
+    #param_grid = {
+    #    "n_estimators": [100, 300, 500],
+    #    "max_depth": [3, 5, 7, 10],
+    #    "learning_rate": [0.01, 0.05, 0.1, 0.2],
+    #    "subsample": [0.8, 1.0],
+    #    "colsample_bytree": [0.6, 0.8, 1.0]
+    #}
 
     grid = GridSearchCV(
         estimator=modelo,
         param_grid=param_grid,
-        scoring='f1',  # 'recall' o 'precision'
+        scoring='recall',  # 'recall' o 'precision' o 'f1'
         cv=5,
         n_jobs=-1
     )
@@ -68,22 +68,22 @@ def entrenar_xgboost_final(X_train, y_train):
 def entrenar_catboost_final(X_train, y_train):
     modelo = CatBoostClassifier(verbose=0, random_state=42)
 
-    #param_grid = {
-    #    "depth": [4, 6, 8],
-    #    "learning_rate": [0.01, 0.1]
-    #}
-
     param_grid = {
-        "depth": [4, 6, 8, 10],
-        "learning_rate": [0.01, 0.05, 0.1],
-        "l2_leaf_reg": [1, 3, 5, 7],
-        "iterations": [300, 500]
+        "depth": [4, 6, 8],
+        "learning_rate": [0.01, 0.1]
     }
+
+    #param_grid = {
+    #    "depth": [4, 6, 8, 10],
+    #    "learning_rate": [0.01, 0.05, 0.1],
+    #    "l2_leaf_reg": [1, 3, 5, 7],
+    #    "iterations": [300, 500]
+    #}
 
     grid = GridSearchCV(
         estimator=modelo,
         param_grid=param_grid,
-        scoring='f1',  #'recall' o 'precision'
+        scoring='recall',  #'recall' o 'precision' o 'f1'
         cv=5,
         n_jobs=-1
     )

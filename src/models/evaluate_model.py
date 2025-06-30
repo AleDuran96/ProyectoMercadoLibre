@@ -18,7 +18,7 @@ from sklearn.metrics import (
 )
 import numpy as np
 
-def evaluar_modelo(modelo, X_test, y_test, threshold=0.2):
+def evaluar_modelo(modelo, X_test, y_test, threshold=0.3):
     # Validar si el modelo tiene predict_proba
     if hasattr(modelo, "predict_proba"):
         y_scores = modelo.predict_proba(X_test)[:, 1]  # Probabilidades clase positiva (1)
@@ -45,11 +45,11 @@ def evaluar_modelo(modelo, X_test, y_test, threshold=0.2):
 def plot_roc_curve(model, X_test, y_test):
     # Obtener probabilidades (la clase positiva está en [:, 1])
     y_probs = model.predict_proba(X_test)[:, 1]
-    
+
     # Calcular FPR y TPR
     fpr, tpr, _ = roc_curve(y_test, y_probs)
     roc_auc = auc(fpr, tpr)
-    
+
     # Graficar curva ROC
     plt.figure(figsize=(8,6))
     plt.plot(fpr, tpr, color='blue', label=f'ROC Curve (AUC = {roc_auc:.2f})')
