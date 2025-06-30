@@ -7,3 +7,4 @@ load_dotenv()
 
 # Obtener la ruta de los datos
 DATA_PATH_BANK = Path(os.getenv("DATA_PATH_BANK"))
+DATA_PATH_COMPLETE = Path(os.getenv("DATA_PATH_COMPLETE"))

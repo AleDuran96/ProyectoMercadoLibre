@@ -38,19 +38,19 @@ def entrenar_final(modelo, X_train, y_train):
 def entrenar_xgboost_final(X_train, y_train):
     modelo = XGBClassifier(use_label_encoder=False, eval_metric="logloss", random_state=100)
 
-    param_grid = {
-        "n_estimators": [100, 300],
-        "max_depth": [3, 6],
-        "learning_rate": [0.01, 0.1]
-    }
-
     #param_grid = {
-    #    "n_estimators": [100, 300, 500],
-    #    "max_depth": [3, 5, 7, 10],
-    #    "learning_rate": [0.01, 0.05, 0.1, 0.2],
-    #    "subsample": [0.8, 1.0],
-    #    "colsample_bytree": [0.6, 0.8, 1.0]
+    #    "n_estimators": [100, 300],
+    #    "max_depth": [3, 6],
+    #    "learning_rate": [0.01, 0.1]
     #}
+
+    param_grid = {
+        "n_estimators": [100, 300, 500],
+        "max_depth": [3, 5, 7, 10],
+        "learning_rate": [0.01, 0.05, 0.1, 0.2],
+        "subsample": [0.8, 1.0],
+        "colsample_bytree": [0.6, 0.8, 1.0]
+    }
 
     grid = GridSearchCV(
         estimator=modelo,
