@@ -106,7 +106,7 @@ class FeatureEngineer:
 
     def prepare_categoricals(self):
         print("🔢 Codificando variables categóricas...")
-        categorical_cols = ['buying_mode', 'shipping_mode', 'category_id', 'seller_province']
+        categorical_cols = ['buying_mode', 'shipping_mode', 'category_id', 'seller_province', 'seller_loyalty']
         for col in categorical_cols:
             self.df[col] = self.df[col].astype('category')
 
