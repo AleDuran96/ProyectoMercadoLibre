@@ -24,6 +24,9 @@ def main():
    # Paso 2: Feature Engineer
    fe = FeatureEngineer(df_clean)
    df_features = fe.engineer()
+   # Guardar el dataframe procesado
+   df_features.to_csv(r"C:\Users\aleja\Documents\Alejandro Duran Carpeta\Proyectos Data Science\Prueba Técnica Mercado Libre\data\processed\df_features.csv", index=False)
+
 
 
 if __name__ == "__main__":

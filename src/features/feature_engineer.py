@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import MinMaxScaler
 
 class FeatureEngineer:
     def __init__(self, df):
         self.df = df
+        self.scaler = MinMaxScaler()
 
     def group_category_id(self, threshold=200):
         print("🔢 Agrupando categorías con pocas ocurrencias...")
@@ -96,6 +98,60 @@ class FeatureEngineer:
         print("✅ Holiday Season aplicado.")
         print("🎉 Etiquetas de promociones y festivos agregadas.")
 
+    def normalize_numerical_features(self):
+        print("📏 Normalizando variables numéricas...")
+        numeric_cols = ['base_price', 'price', 'initial_quantity', 'available_quantity',
+                        'discount_pct', 'days_since_created']
+        self.df[numeric_cols] = self.scaler.fit_transform(self.df[numeric_cols])
+
+    def prepare_categoricals(self):
+        print("🔢 Codificando variables categóricas...")
+        categorical_cols = ['buying_mode', 'shipping_mode', 'category_id', 'seller_province']
+        for col in categorical_cols:
+            self.df[col] = self.df[col].astype('category')
+
+    def convert_booleans_to_int(self):
+        print("🔁 Convirtiendo booleanos a enteros...")
+        bool_cols = ['shipping_admits_pickup', 'shipping_is_free', 'is_new','is_discounted', 'is_weekend', 'is_promotion_day', 'is_holiday_season']
+        for col in bool_cols:
+            self.df[col] = self.df[col].astype(int)
+
+
+    def encode_cyclic_features(self):
+        """
+        Transforma las variables cíclicas 'month' (1-12) y 'weekday' (0-6) 
+        en componentes seno y coseno para representar su naturaleza circular.
+        """
+        print("🔄 Codificando variables cíclicas (month y weekday)...")
+
+        # Verifica que las columnas existan
+        if 'month' in self.df.columns:
+            self.df['month_sin'] = np.sin(2 * np.pi * self.df['month'] / 12)
+            self.df['month_cos'] = np.cos(2 * np.pi * self.df['month'] / 12)
+
+        if 'weekday' in self.df.columns:
+            self.df['weekday_sin'] = np.sin(2 * np.pi * self.df['weekday'] / 7)
+            self.df['weekday_cos'] = np.cos(2 * np.pi * self.df['weekday'] / 7)
+
+        print("✅ Codificación cíclica completada.")
+
+    def drop_unused_columns(self):
+        """
+        Elimina columnas intermedias que ya no son necesarias después del feature engineering.
+        """
+        print("🧹 Eliminando columnas que ya no se requieren...")
+
+        columns_to_drop = [
+            'month',
+            'weekday',
+            'date_created',  # opcional: si ya sacaste toda la info temporal
+        ]
+
+        # Solo elimina las columnas que sí existen en el DataFrame
+        self.df.drop(columns=[col for col in columns_to_drop if col in self.df.columns], inplace=True)
+
+        print("✅ Columnas innecesarias eliminadas.")
+
 
     def engineer(self):
         print("\n⚙️ Iniciando Feature Engineering...\n")
@@ -106,5 +162,10 @@ class FeatureEngineer:
         self.create_discount_features()
         self.create_temporal_features()
         self.tag_promotion_and_holidays()
+        self.normalize_numerical_features()
+        self.prepare_categoricals()
+        self.encode_cyclic_features()
+        self.convert_booleans_to_int()
+        self.drop_unused_columns()
         print("\n✅ Feature Engineering completado.\n")
         return self.df
