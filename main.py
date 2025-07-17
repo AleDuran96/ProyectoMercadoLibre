@@ -11,14 +11,19 @@ from src.models.evaluate_model import evaluar_modelo, plot_roc_curve
 # main.py
 
 from src.data.data_analyzer import DataAnalyzer
+from src.features.feature_engineer import FeatureEngineer
+
 
 def main():
    # Paso 1: EDA
    analyzer = DataAnalyzer(DATA_PATH)
    df_clean = analyzer.clean_data()
 
-   print(df_clean.shape)
-   # Usar los métodos definidos
+   print(df_clean["shipping_mode"].value_counts())
+
+   # Paso 2: Feature Engineer
+   fe = FeatureEngineer(df_clean)
+   df_features = fe.engineer()
 
 
 if __name__ == "__main__":

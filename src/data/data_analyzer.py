@@ -39,9 +39,17 @@ class DataAnalyzer:
                 self.df[col] = pd.to_numeric(self.df[col], errors='coerce')
 
             # Convertir flags a booleanos
-            bool_cols = ['shipping_admits_pickup', 'shipping_is_free', 'is_new']
+            bool_cols = ['shipping_admits_pickup', 'shipping_is_free']
             for col in bool_cols:
-                self.df[col] = self.df[col].astype('bool')
+                self.df[col] = (
+                    self.df[col]
+                    .astype(str)         # Convertimos todo a string
+                    .str.strip()         # Quitamos espacios antes y después
+                    .str.lower()         # Pasamos todo a minúsculas
+                    .map({'true': True, 'false': False})
+                )
+
+            self.df['is_new'] = self.df['is_new'].map({1: True, 0: False})
 
             print("✅ Tipos de datos corregidos.")
             print(f"Tipos de Datos {self.df.dtypes}")
@@ -55,7 +63,7 @@ class DataAnalyzer:
         if self.df is not None:
             columnas_a_eliminar = [
                 'id', 'title', 'tags', 'attributes', 'pictures', 'variations',
-                'seller_id', 'status', 'sub_status', 'seller_country', 'seller_city'
+                'seller_id', 'status', 'sub_status', 'seller_country', 'seller_city', 'warranty'
             ]
 
             existentes = [col for col in columnas_a_eliminar if col in self.df.columns]
