@@ -52,9 +52,7 @@ class FeatureEngineer:
     def create_temporal_features(self):
         print("📅 Generando variables temporales...")
         self.df['days_since_created'] = (pd.Timestamp.now() - self.df['date_created']).dt.days
-        self.df['month'] = self.df['date_created'].dt.month
-        self.df['weekday'] = self.df['date_created'].dt.weekday
-        self.df['is_weekend'] = self.df['weekday'].isin([5, 6])
+
         print("✅ Variables temporales generadas.")
 
     def tag_promotion_and_holidays(self):
@@ -112,7 +110,7 @@ class FeatureEngineer:
 
     def convert_booleans_to_int(self):
         print("🔁 Convirtiendo booleanos a enteros...")
-        bool_cols = ['shipping_admits_pickup', 'shipping_is_free', 'is_new','is_discounted', 'is_weekend', 'is_promotion_day', 'is_holiday_season']
+        bool_cols = ['shipping_admits_pickup', 'shipping_is_free','is_discounted']
         for col in bool_cols:
             self.df[col] = self.df[col].astype(int)
 
@@ -142,9 +140,7 @@ class FeatureEngineer:
         print("🧹 Eliminando columnas que ya no se requieren...")
 
         columns_to_drop = [
-            'month',
-            'weekday',
-            'date_created',  # opcional: si ya sacaste toda la info temporal
+            'date_created'
         ]
 
         # Solo elimina las columnas que sí existen en el DataFrame
@@ -161,10 +157,8 @@ class FeatureEngineer:
         self.clean_shipping_mode()
         self.create_discount_features()
         self.create_temporal_features()
-        self.tag_promotion_and_holidays()
         self.normalize_numerical_features()
         self.prepare_categoricals()
-        self.encode_cyclic_features()
         self.convert_booleans_to_int()
         self.drop_unused_columns()
         print("\n✅ Feature Engineering completado.\n")

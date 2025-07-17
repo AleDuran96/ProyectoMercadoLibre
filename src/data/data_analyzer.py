@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 
+# Objetivo: ¿Cuántas unidades puede vender una nueva publicación?”
+
 class DataAnalyzer:
     def __init__(self, file_path: str):
         """
@@ -15,6 +17,8 @@ class DataAnalyzer:
         Lee el dataset y lo guarda en un atributo interno.
         """
         self.df = pd.read_csv(self.file_path)
+        # Solo nos interesa analizar los artículos nuevos
+        self.df = self.df[self.df['is_new'] == 1]
         print(f"✅ Dataset cargado con {self.df.shape[0]} filas y {self.df.shape[1]} columnas.")
         print(f"Primeras Filas: {self.df.head()}")
 
@@ -49,8 +53,6 @@ class DataAnalyzer:
                     .map({'true': True, 'false': False})
                 )
 
-            self.df['is_new'] = self.df['is_new'].map({1: True, 0: False})
-
             print("✅ Tipos de datos corregidos.")
             print(f"Tipos de Datos {self.df.dtypes}")
         else:
@@ -63,7 +65,8 @@ class DataAnalyzer:
         if self.df is not None:
             columnas_a_eliminar = [
                 'id', 'title', 'tags', 'attributes', 'pictures', 'variations',
-                'seller_id', 'status', 'sub_status', 'seller_country', 'seller_city', 'warranty'
+                'seller_id', 'status', 'sub_status', 'seller_country', 'seller_city', 'warranty',
+                'is_new'
             ]
 
             existentes = [col for col in columnas_a_eliminar if col in self.df.columns]
@@ -208,6 +211,20 @@ class DataAnalyzer:
             print("⚠️ Carga el dataset primero con load_data().")
             return None
 
+    def cap_sold_quantity_outliers(self, percentile=0.95):
+        """
+        Reemplaza outliers altos de 'sold_quantity' con el valor del percentil dado (default: 95%).
+        """
+        if self.df is not None:
+            cap_value = self.df['sold_quantity'].quantile(percentile)
+            num_outliers = (self.df['sold_quantity'] > cap_value).sum()
+
+            self.df.loc[self.df['sold_quantity'] > cap_value, 'sold_quantity'] = cap_value
+            print(f"\n✂️ Reemplazados {num_outliers} outliers de 'sold_quantity' con el valor del percentil {int(percentile * 100)}: {cap_value:.2f}")
+        else:
+            print("⚠️ Carga el dataset primero con load_data().")
+
+
     def clean_data(self):
         self.load_data()
         self.fix_data_types()
@@ -218,6 +235,7 @@ class DataAnalyzer:
         self.remove_duplicates()
         self.check_inconsistencies()
         self.summary_statistics()
-        self.detect_price_outliers(method="zscore")
+        self.detect_price_outliers(method="iqr")
+        self.cap_sold_quantity_outliers()
 
         return self.df
